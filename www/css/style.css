@@ -1,0 +1,8 @@
+/* Empty. Add your own CSS if you like */
+.complated {
+  text-decoration: line-through;
+}
+
+.not-wrap {
+  white-space: initial;
+}
