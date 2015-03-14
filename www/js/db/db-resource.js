@@ -109,9 +109,13 @@ angular.module('db.resource', ['db.init'])
     });
   }
   
-  self.UUID = function() {
+  self.UUID = function () {
     return init.UUID();
   };
+  
+  self.migration = function () {
+    return init.migration();
+  }
 
   return self;
 });

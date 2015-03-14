@@ -1,6 +1,6 @@
 angular.module('module.home', [])
 
-.controller('HomeCtrl', ['$scope', '$ionicModal', 'db', function ($scope, $ionicModal, db) {
+.controller('HomeCtrl', ['$scope', '$ionicModal', 'db', '$timeout', function ($scope, $ionicModal, db, $timeout) {
   $scope.isReorder = false;
   $scope.list = [];
   
@@ -8,6 +8,10 @@ angular.module('module.home', [])
     title: '',
     description: ''
   }
+  
+  $timeout(function () {
+    db.migration();
+  }, 500);
   
   showList();
   
@@ -45,7 +49,6 @@ angular.module('module.home', [])
   
   function showList() {
     db.get('todos').then(function (result) {
-      console.log(JSON.stringify(result));
       $scope.list = [];
       result.forEach(function (item) {
         $scope.list.push({id: item.id, title: item.title, description: item.des});

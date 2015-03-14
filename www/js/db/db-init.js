@@ -1,6 +1,6 @@
 angular.module('db.init', ['db.config'])
 
-.factory('init', function ($q, database) {
+.factory('init', function ($q, database, migration) {
   var self = this;
   self.db = null;
 
@@ -26,6 +26,79 @@ angular.module('db.init', ['db.config'])
         console.log(result);
       }, function (err) {
         console.log(err);
+      });
+    });
+  }
+  
+  self.migration = function () {
+    var query = 'SELECT * FROM config';
+    self.query(query).then(function (result) {
+      var result = self.fetch(result);
+      if (result.length == 0) {
+        // DB First Run
+        console.log('false');
+        query = 'INSERT INTO config (key, value) VALUES ("DB Version", "0")';
+        self.query(query).then(function (result) {
+          console.log("DB Version: 0");
+          checkMigration(0);          
+        }, function (err) {
+          console.log(err);
+        });
+      } else {
+        checkMigration(result[0].value);
+      }
+    }, function (err) {
+      console.log(err);
+    });
+    
+  }
+  
+  checkMigration = function (dbVersion) {
+    var dbMigration = migration.length;
+    if (dbVersion != dbMigration) {
+      runMigration(dbVersion, dbMigration);
+    }
+  }
+  
+  runMigration = function (dbVersion, dbMigration) {
+    console.log("dbVersion: ", dbVersion);
+    console.log("dbMigration: ", dbMigration);
+    console.log('RUN Migration');
+
+    
+    migration.forEach(function (db) {
+      if (db.migration > dbVersion)
+      db.tables.forEach(function (table) {
+        var columns = [];
+
+        table.columns.forEach(function (column) {
+          columns.push(column.name + ' ' + column.type);
+        });
+        
+        var query = 'CREATE TABLE IF NOT EXISTS ' + table.name + ' (' + columns.join(',') + ')';
+        self.query(query).then(function (result) {
+          table.columns.forEach(function (column) {
+            query = 'ALTER TABLE ' + table.name + ' ADD COLUMN ' + column.name + ' ' + column.type + '';
+            self.query(query).then(function (result) {
+              console.log(column.name + " added!");
+              query = 'UPDATE config SET value=' + db.migration + '';
+              self.query(query).then(function (result) {
+                
+              }, function (err) {
+                console.log(err);
+              });
+            }, function (err) {
+              if (err.code !== 5) {
+                console.log(err);
+              } else {
+                console.log(column.name + " already added!");
+              }
+            });
+          });
+        }, function (err) {
+          console.log(err);
+        });
+        
       });
     });
   }
