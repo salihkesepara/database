@@ -116,6 +116,10 @@ angular.module('db.resource', ['db.init'])
   self.migration = function () {
     return init.migration();
   }
+  
+  self.init = function () {
+    return init.db();
+  }
 
   return self;
 });

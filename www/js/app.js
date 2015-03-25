@@ -1,6 +1,6 @@
-angular.module('starter', ['ionic', 'module.home', 'module.about', 'module.todo', 'module.todoAdd', 'db.init', 'db.resource'])
+angular.module('starter', ['ionic', 'module.home', 'module.about', 'module.todo', 'module.todoAdd', 'db.resource'])
 
-.run(function ($ionicPlatform,init) {
+.run(function ($ionicPlatform, db) {
   $ionicPlatform.ready(function () {
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'module.home', 'module.about', 'module.todo'
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-    init.db();
+    db.init();
   });
 })
 
