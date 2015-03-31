@@ -3,6 +3,7 @@ angular.module('db.config', [])
   name: 'DB',
   tables: [
     {
+      // This config table is necessary!
       name: 'config',
       columns: [
         {name: 'id', type: 'integer primary key'},

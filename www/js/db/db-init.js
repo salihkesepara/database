@@ -94,8 +94,8 @@ angular.module('db.init', ['db.config'])
 
   checkMigration = function (dbVersion) {
     var deferred = $q.defer();
-//  if (angular.isUndefined(dbMigration)) deferred.resolve("Migration not exists!");
     
+    if (migration.length == 0) deferred.resolve("Migration not exists!");
     var dbMigration = migration.length;
     if (dbVersion != dbMigration) {
       console.log("dbVersion: ", dbVersion);
@@ -122,8 +122,14 @@ angular.module('db.init', ['db.config'])
         tableForEach().then(function (result) {
           console.log("db.migration:", migration[0].migration);
           console.log("------------");
-          migration.splice(0, 1);
-          deferred.resolve(runMigration(dbVersion, dbMigration));
+          query = 'UPDATE config SET value=' + db.migration + '';
+          self.query(query).then(function (result) {
+            migration.splice(0, 1);
+            deferred.resolve(runMigration(dbVersion, dbMigration));
+          }, function (err) {
+            console.log(err);
+            deferred.reject(err);
+          });
         }, function (err) {
           deferred.reject(err);
         });
@@ -179,14 +185,8 @@ angular.module('db.init', ['db.config'])
       query = 'ALTER TABLE ' + table.name + ' ADD COLUMN ' + column.name + ' ' + column.type + '';
       self.query(query).then(function (result) {
         console.log("column.name: " + column.name + " added!");
-        query = 'UPDATE config SET value=' + db.migration + '';
-        self.query(query).then(function (result) {
-          migration[0].tables[0].columns.splice(0, 1);
-          deferred.resolve(columnForEach());
-        }, function (err) {
-          console.log(err);
-          deferred.reject(err);
-        });
+        migration[0].tables[0].columns.splice(0, 1);
+        deferred.resolve(columnForEach());
       }, function (err) {
         if (err.code !== 5) {
           console.log(err);
