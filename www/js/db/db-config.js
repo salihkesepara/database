@@ -3,6 +3,14 @@ angular.module('db.config', [])
   name: 'DB',
   tables: [
     {
+      name: 'config',
+      columns: [
+        {name: 'id', type: 'integer primary key'},
+        {name: 'key', type: 'text'},
+        {name: 'value', type: 'text'}
+      ]
+    },
+    {
       name: 'todos',
       columns: [
         {name: 'id', type: 'text'},
@@ -21,7 +29,7 @@ angular.module('db.config', [])
       ]
     },
     {
-      name: 'config',
+      name: 'test',
       columns: [
         {name: 'id', type: 'integer primary key'},
         {name: 'key', type: 'text'},
@@ -39,8 +47,7 @@ angular.module('db.config', [])
       {
         name: 'todos',
         columns: [
-          {name: 'newField11', type: 'text'},
-          {name: 'newField12', type: 'text'}
+          {name: 'migrate1', type: 'text'}
         ]
       },
     ]
@@ -52,14 +59,14 @@ angular.module('db.config', [])
       {
         name: 'list',
         columns: [
-          {name: 'newsField21', type: 'text'}
+          {name: 'migrate21', type: 'text'}
         ]
       },
       {
         name: 'customer',
         columns: [
-          {name: 'id', type: 'text'},
-          {name: 'customerName', type: 'text'}
+          {name: 'migrate22', type: 'text'},
+          {name: 'migrate23', type: 'text'}
         ]
       }
     ]
@@ -71,14 +78,47 @@ angular.module('db.config', [])
       {
         name: 'orders',
         columns: [
-          {name: 'id', type: 'text'},
-          {name: 'name', type: 'text'}
+          {name: 'migrate31', type: 'text'},
+          {name: 'migrate32', type: 'text'}
         ]
       },
       {
         name: 'list',
         columns: [
-          {name: 'color', type: 'text'}
+          {name: 'migrate33', type: 'text'}
+        ]
+      }
+    ]
+  },
+  {
+    migration: 4,
+    name: 'DB',
+    tables: [
+      {
+        name: 'list',
+        columns: [
+          {name: 'isOk', type: 'text'},
+          {name: 'isExist', type: 'text'}
+        ]
+      },
+      {
+        name: 'Personel',
+        columns: [
+          {name: 'name', type: 'text'},
+          {name: 'surName', type: 'text'}
+        ]
+      }
+    ]
+  },
+  {
+    migration: 5,
+    name: 'DB',
+    tables: [
+      {
+        name: 'list',
+        columns: [
+          {name: 'cool', type: 'text'},
+          {name: 'rowNumber', type: 'text'}
         ]
       }
     ]

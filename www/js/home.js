@@ -9,10 +9,6 @@ angular.module('module.home', [])
     description: ''
   }
   
-  $timeout(function () {
-    db.migration();
-  }, 500);
-  
   showList();
   
   $scope.onItemDelete = function(item) {

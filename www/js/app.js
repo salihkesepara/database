@@ -9,7 +9,11 @@ angular.module('starter', ['ionic', 'module.home', 'module.about', 'module.todo'
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-    db.init();
+    db.init().then(function (result) {
+      console.log(result);
+    }, function (err) {
+      console.log(err);
+    });
   });
 })
 

@@ -113,12 +113,12 @@ angular.module('db.resource', ['db.init'])
     return init.UUID();
   };
   
-  self.migration = function () {
-    return init.migration();
-  }
-  
   self.init = function () {
-    return init.db();
+    return init.db().then(function (result) {
+      return result;
+    }, function (err) {
+      return err;
+    });
   }
 
   return self;
